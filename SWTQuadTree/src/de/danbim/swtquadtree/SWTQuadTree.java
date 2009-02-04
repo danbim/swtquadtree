@@ -7,6 +7,16 @@ import java.util.Set;
 
 import org.eclipse.swt.graphics.Rectangle;
 
+/**
+ * Default implementation for {@link ISWTQuadTree}. This implementation is not
+ * thread-safe but therefore faster. Use subclass
+ * {@link SynchronizedSWTQuadTree} for thread-safety.
+ * 
+ * @author Daniel Bimschas
+ * 
+ * @param <T>
+ *            the type of items the tree should manage
+ */
 class SWTQuadTree<T> implements ISWTQuadTree<T> {
 
 	static class Entry<K> {
@@ -252,7 +262,7 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 			}
 			leaf = isLeaf;
 		}
-		
+
 		// propagate cleanup to parent
 		if (parent != null) {
 			parent.cleanUp();
@@ -342,14 +352,14 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 	 * {@link SWTQuadTree#LOWER_RIGHT}, {@link SWTQuadTree#LOWER_LEFT}) into
 	 * which the bounding box <code>itemBoundingBox</code> would fit.
 	 * 
-	 * @return the child rectangle's position, -1 if it doesn't fit into a
-	 *         child rectangle, -1 if maximum resolution is reached
+	 * @return the child rectangle's position, -1 if it doesn't fit into a child
+	 *         rectangle, -1 if maximum resolution is reached
 	 */
 	int getFittingChildRectanglePosition(Rectangle itemBoundingBox) {
 
 		if (maximumResolutionReached)
 			return -1;
-		
+
 		for (int i = 0; i < 4; i++)
 			if (boundingBoxContains(childBoxes[i], itemBoundingBox))
 				return i;
@@ -714,11 +724,13 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 	 */
 	SWTQuadTree<T> searchNode(Rectangle boundingBox) {
 
-		int position = !maximumResolutionReached ? getFittingChildRectanglePosition(boundingBox) : -1;
+		int position = !maximumResolutionReached ? getFittingChildRectanglePosition(boundingBox)
+				: -1;
 
 		if (position != -1) {
 
-			return leaf ? this : children[position] == null ? this : children[position].searchNode(boundingBox);
+			return leaf ? this : children[position] == null ? this : children[position]
+					.searchNode(boundingBox);
 
 		}
 

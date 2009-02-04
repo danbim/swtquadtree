@@ -9,6 +9,8 @@ import org.eclipse.swt.graphics.Rectangle;
  * {@link org.eclipse.swt.graphics.Rectangle} as a basis for positioning,
  * removing, updating and searching its elements.
  * 
+ * Contains a factory {@link Factory} for creating tree instances.
+ * 
  * @author Daniel Bimschas
  * 
  * @param <T>
@@ -32,8 +34,19 @@ public interface ISWTQuadTree<T> {
 		}
 
 		/**
-		 * Creates a new {@link ISWTQuadTree} instance. The
-		 * <code>totalSideLength</code> as well as the
+		 * Same as calling
+		 * {@link Factory#create(int, int, int, int, int, boolean)} with
+		 * <code>threadSafe</code> set to <code>true</code>.
+		 */
+		public ISWTQuadTree<T> create(int originX, int originY, int totalSideLength,
+				int minSideLength, int capacity) {
+			return create(originX, originY, totalSideLength, minSideLength, capacity, false);
+		}
+
+		/**
+		 * Creates a new (thread-safe or not) {@link ISWTQuadTree} instance.
+		 * 
+		 * The <code>totalSideLength</code> as well as the
 		 * <code>minSideLength</code> must be powers of two because then they
 		 * are divisable into quadrants.
 		 * 
@@ -52,16 +65,20 @@ public interface ISWTQuadTree<T> {
 		 * @param capacity
 		 *            the maximum number of objects that one node should handle
 		 *            (excluding overflows when reaching maximum resolution)
+		 * @param threadSafe
+		 *            if the created tree should be thread-safe (i.e. using
+		 *            synchronized methods) or not
 		 * 
 		 * @throws RuntimeException
 		 *             if <code>totalSideLength</code> is not a power of 2
 		 * @return a newly created ISWTQuadTree instance
 		 */
 		public ISWTQuadTree<T> create(int originX, int originY, int totalSideLength,
-				int minSideLength, int capacity) {
-			return new SWTQuadTree<T>(originX, originY, totalSideLength, minSideLength, capacity);
+				int minSideLength, int capacity, boolean threadSafe) {
+			return threadSafe ? new SynchronizedSWTQuadTree<T>(originX, originY, totalSideLength,
+					minSideLength, capacity) : new SWTQuadTree<T>(originX, originY,
+					totalSideLength, minSideLength, capacity);
 		}
-
 	}
 
 	/**
@@ -88,7 +105,7 @@ public interface ISWTQuadTree<T> {
 	 * @return the number of items currently held by this instance
 	 */
 	int getItemCount();
-	
+
 	/**
 	 * Inserts the object <code>item</code> into the ISWTQuadTree using the
 	 * Rectangle <code>boundingBox</code> as its bounding box.
@@ -144,7 +161,7 @@ public interface ISWTQuadTree<T> {
 	 * @return all items managed by the {@link ISWTQuadTree} instance
 	 */
 	Set<T> searchItems();
-	
+
 	/**
 	 * Returns a set of all items that have bounding boxes intersecting with the
 	 * bounding box <code>boundingBox</code>.
