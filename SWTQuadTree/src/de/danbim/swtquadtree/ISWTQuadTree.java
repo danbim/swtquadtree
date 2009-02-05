@@ -75,6 +75,7 @@ public interface ISWTQuadTree<T> {
 		 */
 		public ISWTQuadTree<T> create(int originX, int originY, int totalSideLength,
 				int minSideLength, int capacity, boolean threadSafe) {
+			
 			return threadSafe ? new SynchronizedSWTQuadTree<T>(originX, originY, totalSideLength,
 					minSideLength, capacity) : new SWTQuadTree<T>(originX, originY,
 					totalSideLength, minSideLength, capacity);
