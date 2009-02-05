@@ -121,7 +121,8 @@ public interface ISWTQuadTree<T> {
 	 *             <li>the bounding box does not intersect with the bounding box
 	 *             of this ISWTQuadTree instance
 	 *             <li> <code>item</code> is <code>null</code>
-	 *             <li> <code>boundingBox</code> is <code>null</code>
+	 *             <li> <code>boundingBox</code> is <code>null</code> or
+	 *             <li> the item is added more than once
 	 *             </ul>
 	 */
 	void insertItem(T item, Rectangle boundingBox);

@@ -412,6 +412,15 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 
 	}
 
+	private void addOrThrowIfExisting(List<Entry<T>> list, Entry<T> entry) {
+		for (Entry<T> listEntry : list) {
+			if (listEntry.item == entry.item)
+				throw new RuntimeException(
+						"Item already contained in the QuadTree. Please make sure you don't add items more than once.");
+		}
+		list.add(entry);
+	}
+
 	/**
 	 * Inserts the item either inside this tree element. It does this by
 	 * <ul>
@@ -432,9 +441,9 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 
 		if (!boundingBoxContains(boundingBox, itemBoundingBox)) {
 
-			if (parent == null)
-				overflows.add(new Entry<T>(itemBoundingBox, item));
-			else
+			if (parent == null) {
+				addOrThrowIfExisting(overflows, new Entry<T>(itemBoundingBox, item));
+			} else
 				parent.insertItemInternal(item, itemBoundingBox);
 
 		}
@@ -443,7 +452,7 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 
 			if (leaf && !capacityReached()) {
 
-				objects.add(new Entry<T>(itemBoundingBox, item));
+				addOrThrowIfExisting(objects, new Entry<T>(itemBoundingBox, item));
 
 			} else {
 
@@ -496,7 +505,7 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 
 			// the item doesn't fit into one of the child boxes or the maximum
 			// resolution is reached
-			overflows.add(new Entry<T>(itemBoundingBox, item));
+			addOrThrowIfExisting(overflows, new Entry<T>(itemBoundingBox, item));
 
 		}
 
