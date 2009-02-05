@@ -330,6 +330,8 @@ public class QuadTreeTest {
 	/**
 	 * Tests if items that lie exactly on the outer border line of the QuadTrees
 	 * bounding box work.
+	 * 
+	 * @see <a href="http://danbim.de/swtquadtree/ticket/1">http://danbim.de/swtquadtree/ticket/1</a>
 	 */
 	@Test
 	public void borderTest() {
