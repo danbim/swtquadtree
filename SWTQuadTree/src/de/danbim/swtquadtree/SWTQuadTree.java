@@ -387,9 +387,6 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 
 	void getItemsRecursive(List<Entry<T>> set) {
 
-		assert isDisjoint(set, overflows);
-		assert isDisjoint(set, objects);
-
 		set.addAll(overflows);
 		set.addAll(objects);
 
@@ -516,28 +513,6 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 		for (SWTQuadTree<T> child : children)
 			if (child != null)
 				return child.integrityCheckParentReferences(false);
-
-		return true;
-
-	}
-
-	private boolean isDisjoint(List<Entry<T>> set1, List<Entry<T>> set2) {
-
-		for (Entry<T> item1 : set1)
-			for (Entry<T> item2 : set2)
-				if (item1.item == item2.item)
-					return false;
-
-		return true;
-
-	}
-
-	private boolean isDisjoint(List<Entry<T>> set1, Set<T> set2) {
-
-		for (Entry<T> entry : set1)
-			for (T item : set2)
-				if (entry.item == item)
-					return false;
 
 		return true;
 
@@ -695,9 +670,6 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 	}
 
 	void searchItemsInternal(HashSet<T> set, Rectangle boundingBox) {
-
-		assert isDisjoint(overflows, set);
-		assert isDisjoint(objects, set);
 
 		for (Entry<T> e : objects)
 			if (e.boundingBox.intersects(boundingBox))
