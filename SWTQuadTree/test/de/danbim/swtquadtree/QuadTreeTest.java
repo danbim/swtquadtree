@@ -14,8 +14,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.danbim.swtquadtree.SWTQuadTree.Entry;
-
 public class QuadTreeTest {
 
 	private ISWTQuadTree<TestingObject> tree;
@@ -28,11 +26,11 @@ public class QuadTreeTest {
 
 	private TestingObject item4;
 
-	private static final int upperLeftX = -512;
-	private static final int upperLeftY = -512;
+	private static final int width = (int) Math.pow(2, 10);
+	private static final int height = (int) Math.pow(2, 10);
 
-	private static final int width = 1024;
-	private static final int height = 1024;
+	private static final int upperLeftX = -(width / 2);
+	private static final int upperLeftY = -(height / 2);
 
 	private static final int rectWidth = 5;
 	private static final int rectHeight = 5;
@@ -328,71 +326,116 @@ public class QuadTreeTest {
 		assertFalse(tree.containsItem(item4, item4.box));
 
 	}
-	
+
+	/**
+	 * Tests if items that lie exactly on the outer border line of the QuadTrees
+	 * bounding box work.
+	 */
+	@Test
+	public void borderTest() {
+
+		Rectangle rectBorderLeft 	= new Rectangle(upperLeftX, upperLeftY + (height /2), rectWidth, rectHeight);
+		Rectangle rectBorderTop 	= new Rectangle(upperLeftX + (width / 2), upperLeftY, rectWidth, rectHeight);
+		Rectangle rectBorderRight 	= new Rectangle(upperLeftX + width, upperLeftY + (height / 2), rectWidth, rectHeight);
+		Rectangle rectBorderBottom 	= new Rectangle(upperLeftX + (width / 2), upperLeftY + height, rectWidth, rectHeight);
+		
+		TestingObject toBorderLeft 	= new TestingObject(rectBorderLeft);
+		TestingObject toBorderTop 	= new TestingObject(rectBorderTop);
+		TestingObject toBorderRight	= new TestingObject(rectBorderRight);
+		TestingObject toBorderBottom = new TestingObject(rectBorderBottom);
+		
+		try {
+			tree.insertItem(toBorderLeft, toBorderLeft.box);
+		} catch (RuntimeException e) {
+			assertTrue(false);
+		}
+		
+		try {
+			tree.insertItem(toBorderTop, toBorderTop.box);
+		} catch (RuntimeException e) {
+			assertTrue(false);
+		}
+		
+		try {
+			tree.insertItem(toBorderBottom, toBorderBottom.box);
+		} catch (RuntimeException e) {
+			assertTrue(false);
+		}
+		
+		try {
+			tree.insertItem(toBorderRight, toBorderRight.box);
+		} catch (RuntimeException e) {
+			assertTrue(false);
+		}
+		
+	}
+
 	@Test
 	public void manyItemsTest() {
-		
+
 		// generate 100 items and insert them
 		Random rand = new Random();
 		int itemX, itemY;
 		Rectangle boundingBox;
 		TestingObject item;
 		List<TestingObject> list = new ArrayList<TestingObject>();
-		
-		for (int i=0; i<100; i++) {
-			
+
+		for (int i = 0; i < 100; i++) {
+
 			itemX = Math.abs(rand.nextInt() % width) + upperLeftX;
 			itemY = Math.abs(rand.nextInt() % height) + upperLeftY;
-			
+
 			boundingBox = new Rectangle(itemX, itemY, rectWidth, rectHeight);
 			item = new TestingObject(boundingBox);
 			list.add(item);
-			
+
 			tree.insertItem(item, boundingBox);
-			
+
 		}
-		
+
 		// check if they are inside
 		for (TestingObject to : list) {
 			assertTrue(tree.containsItem(to, to.box));
 		}
-		
+
 		for (TestingObject to : list) {
-			
+
 			itemX = Math.abs(rand.nextInt() % width) + upperLeftX;
 			itemY = Math.abs(rand.nextInt() % height) + upperLeftY;
-			
+
 			boundingBox = to.box;
 			to.box = new Rectangle(itemX, itemY, rectWidth, rectHeight);
-			
+
 			tree.moveItem(to, boundingBox, to.box);
-			
+
 			assertTrue(tree.searchItems(to.box).contains(to));
 			assertTrue(to.box + " was not found", tree.containsItem(to, to.box));
-			
+
 		}
-		
+
 		// remove 10 items per time and check if the rest is still inside
-		for (int i=0; i<list.size(); i++) {
-			
+		for (int i = 0; i < list.size(); i++) {
+
 			tree.removeItem(list.get(i), list.get(i).box);
-			
+
 			if (i % 10 == 0) {
-				
-				// check if the first i elements have been removed 
-				for (int k=0; k<i; k++)
-					assertFalse(list.get(k).box + " konnte nicht gefunden werden", tree.containsItem(list.get(k), list.get(k).box));
-				
+
+				// check if the first i elements have been removed
+				for (int k = 0; k < i; k++)
+					assertFalse(list.get(k).box + " konnte nicht gefunden werden", tree
+							.containsItem(list.get(k), list.get(k).box));
+
 				// check if the other elements are still inside
-				for (int k=i+1; k<list.size(); k++)
-					assertTrue(list.get(k).box + " konnte nicht gefunden werden", tree.containsItem(list.get(k), list.get(k).box));
-				
+				for (int k = i + 1; k < list.size(); k++)
+					assertTrue(list.get(k).box + " konnte nicht gefunden werden", tree
+							.containsItem(list.get(k), list.get(k).box));
+
 			}
-			
+
 		}
-		
+
 		System.out.println(tree);
-		
+
 	}
 
 }
