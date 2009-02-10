@@ -229,8 +229,9 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 	void cleanUp() {
 
 		// check if all items in the subnodes would fit into this and in this
-		// case reorder them
-		int itemCount = getItemCountRecursive();
+		// case reorder them (we don't check for overflows in this node since
+		// overflows are always allowed to exceed the capacity)
+		int itemCount = objects.size() + getChildItemCountRecursive();
 		if (itemCount <= capacity) {
 
 			// put all objects from children into this node
@@ -270,7 +271,7 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 		}
 
 		// check invariants
-		assert isOfIntegrity();
+		assert isOfIntegrity() : "Invariants check failed for: " + this.toString();
 
 	}
 
