@@ -371,21 +371,32 @@ public class QuadTreeTest {
 		}
 		
 	}
-
+	
 	@Test
-	public void manyItemsTest() {
+	public void manyItemsTestLarge() {
+		manyItemsTestInternal(width, height);
+	}
+	
+	@Test
+	public void manyItemsTestSmall() {
+		manyItemsTestInternal(100, 100);
+	}
+
+	private void manyItemsTestInternal(final int testWidth, final int testHeight) {
 
 		// generate 100 items and insert them
+		int objectCnt = 5000;
+		int moveCnt = 5;
 		Random rand = new Random();
 		int itemX, itemY;
 		Rectangle boundingBox;
 		TestingObject item;
 		List<TestingObject> list = new ArrayList<TestingObject>();
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < objectCnt; i++) {
 
-			itemX = Math.abs(rand.nextInt() % width) + upperLeftX;
-			itemY = Math.abs(rand.nextInt() % height) + upperLeftY;
+			itemX = Math.abs(rand.nextInt() % testWidth) + upperLeftX;
+			itemY = Math.abs(rand.nextInt() % testHeight) + upperLeftY;
 
 			boundingBox = new Rectangle(itemX, itemY, rectWidth, rectHeight);
 			item = new TestingObject(boundingBox);
@@ -399,21 +410,26 @@ public class QuadTreeTest {
 		for (TestingObject to : list) {
 			assertTrue(tree.containsItem(to, to.box));
 		}
-
-		for (TestingObject to : list) {
-
-			itemX = Math.abs(rand.nextInt() % width) + upperLeftX;
-			itemY = Math.abs(rand.nextInt() % height) + upperLeftY;
-
-			boundingBox = to.box;
-			to.box = new Rectangle(itemX, itemY, rectWidth, rectHeight);
-
-			tree.moveItem(to, boundingBox, to.box);
-
-			assertTrue(tree.searchItems(to.box).contains(to));
-			assertTrue(to.box + " was not found", tree.containsItem(to, to.box));
-
+		
+		System.out.println("All objects are inside. Now randomly moving every of the " + objectCnt + " objects " + moveCnt + " times");
+		long startMovement = System.currentTimeMillis();
+		for (int i=0; i<moveCnt; i++) {
+			for (TestingObject to : list) {
+	
+				itemX = Math.abs(rand.nextInt() % testWidth) + upperLeftX;
+				itemY = Math.abs(rand.nextInt() % testHeight) + upperLeftY;
+	
+				boundingBox = to.box;
+				to.box = new Rectangle(itemX, itemY, rectWidth, rectHeight);
+	
+				tree.moveItem(to, boundingBox, to.box);
+	
+				assertTrue(tree.searchItems(to.box).contains(to));
+				assertTrue(to.box + " was not found", tree.containsItem(to, to.box));
+	
+			}
 		}
+		System.out.println("Moving took " + (System.currentTimeMillis()-startMovement) + " ms.");
 
 		// remove 10 items per time and check if the rest is still inside
 		for (int i = 0; i < list.size(); i++) {
