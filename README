@@ -2,8 +2,8 @@
 
 WHAT IS 'SWT QuadTree'?
 
-  SWT QuadTree is an implementation of the quadtree [1] data structure for use with object that use SWTs [2] Rectangle type [3] based for their bounding boxes.
-  The implementation can hold any type of object and provides a synchronized thread-safe as well as a faster unsynchronized version.
+  SWT QuadTree is an implementation of the quadtree [1] data structure that can hold any type of object but uses SWTs [2] Rectangle type [3] to describe its' bounding box.
+  The implementation provides a synchronized thread-safe as well as a faster unsynchronized version.
 
 LICENSE
 
