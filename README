@@ -1,0 +1,16 @@
+  SWT QuadTree
+
+WHAT IS 'SWT QuadTree'?
+
+  SWT QuadTree is an implementation of the quadtree [1] data structure for use with object that use SWTs [2] Rectangle type [3] based for their bounding boxes.
+  The implementation can hold any type of object and provides a synchronized thread-safe as well as a faster unsynchronized version.
+
+LICENSE
+
+  Didn't think about that yet. If somebody wants to use this code, feel free to do so. However, it would be nice if you would give me some credits in your product and send me an email to inform me that you're using my stuff ;-).
+
+REFERENCES
+
+  [1] Quadtree - http://en.wikipedia.org/wiki/Quadtree
+  [2] SWT: The Standard Widget Toolkit - http://www.eclipse.org/swt/
+  [3] http://help.eclipse.org/helios/index.jsp?topic=/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/graphics/Rectangle.html
