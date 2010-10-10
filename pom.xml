@@ -23,10 +23,36 @@
 
 	<profiles>
 		<profile>
-			<id>unix</id>
+			<id>mac-x86_64</id>
 			<activation>
 				<os>
-					<family>unix</family>
+					<family>mac</family>
+					<name>mac os x</name>
+				</os>
+			</activation>
+			<properties>
+				<swt.os-specific-dep>swt-cocoa-macosx-x86_64</swt.os-specific-dep>
+				<swt.version>3.6.1</swt.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac-x86</id>
+			<activation>
+				<os>
+					<name>mac os x</name>
+					<arch>x86</arch>
+				</os>
+			</activation>
+			<properties>
+				<swt.os-specific-dep>swt-cocoa-macosx</swt.os-specific-dep>
+				<swt.version>3.6.1</swt.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux</id>
+			<activation>
+				<os>
+					<name>linux</name>
 				</os>
 			</activation>
 			<properties>
@@ -43,32 +69,6 @@
 			</activation>
 			<properties>
 				<swt.os-specific-dep>swt-win32</swt.os-specific-dep>
-				<swt.version>3.6.1</swt.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>mac</id>
-			<activation>
-				<os>
-					<family>mac</family>
-					<arch>x86</arch>
-				</os>
-			</activation>
-			<properties>
-				<swt.os-specific-dep>swt-cocoa-macosx</swt.os-specific-dep>
-				<swt.version>3.6.1</swt.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>mac-x64_64</id>
-			<activation>
-				<os>
-					<family>mac</family>
-					<arch>x86_64</arch>
-				</os>
-			</activation>
-			<properties>
-				<swt.os-specific-dep>swt-cocoa-macosx-x86_64</swt.os-specific-dep>
 				<swt.version>3.6.1</swt.version>
 			</properties>
 		</profile>
