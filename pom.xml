@@ -154,7 +154,7 @@
 		<snapshotRepository>
 			<id>itm-nexus-repository-snapshots</id>
 			<name>ITM UzL Nexus snapshots repository</name>
-			<url>scp://dev.itm.uni-luebeck.de/opt/sonatype-work/nexus/storage/snapshot/</url>
+			<url>scp://dev.itm.uni-luebeck.de/opt/sonatype-work/nexus/storage/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
