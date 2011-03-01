@@ -436,7 +436,7 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 	 * {@link SWTQuadTree#insertItem(Object, Rectangle)}.
 	 * 
 	 * @param item
-	 * @param boundingBox
+	 * @param itemBoundingBox
 	 */
 	void insertItemInternal(T item, Rectangle itemBoundingBox) {
 
@@ -701,7 +701,7 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 	 * Search the tree element which should contain an item with the bounding
 	 * box <code>boundingBox</code>.
 	 * 
-	 * @param rect
+	 * @param boundingBox
 	 *            the bounding box for which the tree element should be searched
 	 */
 	SWTQuadTree<T> searchNode(Rectangle boundingBox) {
@@ -771,5 +771,7 @@ class SWTQuadTree<T> implements ISWTQuadTree<T> {
 		return false;
 
 	}
+
+
 
 }

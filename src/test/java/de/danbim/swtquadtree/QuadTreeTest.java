@@ -59,8 +59,7 @@ public class QuadTreeTest {
 	@Before
 	public void setUp() throws Exception {
 
-		tree = new ISWTQuadTree.Factory<TestingObject>()
-				.create(upperLeftX, upperLeftY, 1024, 16, 1);
+		tree = new ISWTQuadTree.Factory<TestingObject>().create(upperLeftX, upperLeftY, 1024, 16, 1);
 
 		item1 = new TestingObject(new Rectangle(upperLeftQuadrant.x, upperLeftQuadrant.y,
 				rectWidth, rectHeight));

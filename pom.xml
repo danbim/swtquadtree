@@ -4,20 +4,22 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.danbim.swtquadtree</groupId>
 	<artifactId>swtquadtree</artifactId>
+	<name>SWT QuadTree</name>
 	<packaging>jar</packaging>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.swt</groupId>
+			<artifactId>${swt.artifactId}</artifactId>
+			<version>${swt.version}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.1</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.swt</groupId>
-			<artifactId>${swt.os-specific-dep}</artifactId>
-			<version>${swt.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -31,7 +33,7 @@
 				</os>
 			</activation>
 			<properties>
-				<swt.os-specific-dep>swt-cocoa-macosx-x86_64</swt.os-specific-dep>
+				<swt.artifactId>swt-cocoa-macosx-x86_64</swt.artifactId>
 				<swt.version>3.6.1</swt.version>
 			</properties>
 		</profile>
@@ -44,7 +46,19 @@
 				</os>
 			</activation>
 			<properties>
-				<swt.os-specific-dep>swt-cocoa-macosx</swt.os-specific-dep>
+				<swt.artifactId>swt-cocoa-macosx</swt.artifactId>
+				<swt.version>3.6.1</swt.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-x86_64</id>
+			<activation>
+				<os>
+					<name>linux</name>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>swt-gtk-linux-x86_64</swt.artifactId>
 				<swt.version>3.6.1</swt.version>
 			</properties>
 		</profile>
@@ -53,10 +67,23 @@
 			<activation>
 				<os>
 					<name>linux</name>
+					<arch>x86</arch>
 				</os>
 			</activation>
 			<properties>
-				<swt.os-specific-dep>swt-gtk-linux</swt.os-specific-dep>
+				<swt.artifactId>swt-gtk-linux</swt.artifactId>
+				<swt.version>3.6.1</swt.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-x86_64</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<swt.artifactId>swt-win32-x86_64</swt.artifactId>
 				<swt.version>3.6.1</swt.version>
 			</properties>
 		</profile>
@@ -65,27 +92,17 @@
 			<activation>
 				<os>
 					<family>windows</family>
+					<arch>x86</arch>
 				</os>
 			</activation>
 			<properties>
-				<swt.os-specific-dep>swt-win32</swt.os-specific-dep>
+				<swt.artifactId>swt-win32</swt.artifactId>
 				<swt.version>3.6.1</swt.version>
 			</properties>
 		</profile>
 	</profiles>
 
 	<repositories>
-		<repository>
-			<id>google-maven-repository</id>
-			<name>Google Maven Repository</name>
-			<url>http://google-maven-repository.googlecode.com/svn/repository/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
 		<repository>
 			<id>itm-maven-repository-releases</id>
 			<url>http://www.itm.uni-luebeck.de/projects/maven/releases/</url>
@@ -107,32 +124,37 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>repository.tu-bs.de</id>
-			<url>http://www.ibr.cs.tu-bs.de/maven/</url>
-			<snapshots>
+			<id>itm-nexus-repository-releases</id>
+			<url>http://dev.itm.uni-luebeck.de:8882/content/repositories/releases/</url>
+			<releases>
 				<enabled>true</enabled>
-			</snapshots>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>repository.jboss.org</id>
-			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+			</releases>
 			<snapshots>
 				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>itm-nexus-repository-snapshots</id>
+			<url>http://dev.itm.uni-luebeck.de:8882/content/repositories/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
 			</snapshots>
 		</repository>
 	</repositories>
 
 	<distributionManagement>
 		<repository>
-			<id>itm-maven-repository-releases</id>
-			<name>ITM UzL Maven releases repository</name>
-			<url>scp://itm01.itm.uni-luebeck.de/www/itm/projects/maven/releases</url>
+			<id>itm-nexus-repository-releases</id>
+			<name>ITM UzL Nexus releases repository</name>
+			<url>scp://dev.itm.uni-luebeck.de/opt/sonatype-work/nexus/storage/releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>itm-maven-repository-snapshots</id>
-			<name>ITM UzL Maven snapshots repository</name>
-			<url>scp://itm01.itm.uni-luebeck.de/www/itm/projects/maven/snapshots</url>
+			<id>itm-nexus-repository-snapshots</id>
+			<name>ITM UzL Nexus snapshots repository</name>
+			<url>scp://dev.itm.uni-luebeck.de/opt/sonatype-work/nexus/storage/snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
