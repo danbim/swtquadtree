@@ -158,7 +158,7 @@
 	</distributionManagement>
 
 	<scm>
-		<connection>scm:git:git@github.com:danbim/swtquadtree.git</connection>
+		<connection>scm:git:https://danbim@github.com/danbim/swtquadtree.git</connection>
 	</scm>
 
 	<build>
