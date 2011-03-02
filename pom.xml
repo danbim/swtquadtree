@@ -158,6 +158,10 @@
 		</snapshotRepository>
 	</distributionManagement>
 
+	<scm>
+		<connection>scm:git:https://danbim@github.com/danbim/swtquadtree.git</connection>
+	</scm>
+
 	<build>
 		<plugins>
 			<plugin>
