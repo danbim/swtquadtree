@@ -1,18 +1,13 @@
 package de.danbim.swtquadtree;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
 import org.eclipse.swt.graphics.Rectangle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 public class QuadTreeTest {
 
@@ -32,8 +27,8 @@ public class QuadTreeTest {
 	private static final int upperLeftX = -(width / 2);
 	private static final int upperLeftY = -(height / 2);
 
-	private static final int rectWidth = 5;
-	private static final int rectHeight = 5;
+	private static final int rectangleWidth = 5;
+	private static final int rectangleHeight = 5;
 
 	private static final Rectangle upperLeftQuadrant = new Rectangle(upperLeftX, upperLeftY,
 			width / 2, height / 2);
@@ -62,13 +57,17 @@ public class QuadTreeTest {
 		tree = new ISWTQuadTree.Factory<TestingObject>().create(upperLeftX, upperLeftY, 1024, 16, 1);
 
 		item1 = new TestingObject(new Rectangle(upperLeftQuadrant.x, upperLeftQuadrant.y,
-				rectWidth, rectHeight));
+				rectangleWidth, rectangleHeight
+		));
 		item2 = new TestingObject(new Rectangle(upperRightQuadrant.x, upperRightQuadrant.y,
-				rectWidth, rectHeight));
+				rectangleWidth, rectangleHeight
+		));
 		item3 = new TestingObject(new Rectangle(lowerRightQuadrant.x, lowerRightQuadrant.y,
-				rectWidth, rectHeight));
+				rectangleWidth, rectangleHeight
+		));
 		item4 = new TestingObject(new Rectangle(lowerLeftQuadrant.x, lowerLeftQuadrant.y,
-				rectWidth, rectHeight));
+				rectangleWidth, rectangleHeight
+		));
 
 	}
 
@@ -96,7 +95,7 @@ public class QuadTreeTest {
 		assertTrue(set.size() == 1);
 		assertTrue(set.contains(item1));
 
-		// move rect1 to upper right quadrant
+		// move rectangle1 to upper right quadrant
 		oldBox = new Rectangle(item1.box.x, item1.box.y, item1.box.width, item1.box.height);
 		item1.box.x = upperRightQuadrant.x;
 		item1.box.y = upperRightQuadrant.y;
@@ -110,7 +109,7 @@ public class QuadTreeTest {
 		assertTrue(set.contains(item1));
 		assertTrue(set.contains(item2));
 
-		// move rect1 to lower right
+		// move rectangle1 to lower right
 		oldBox = new Rectangle(item1.box.x, item1.box.y, item1.box.width, item1.box.height);
 		item1.box.x = lowerRightQuadrant.x;
 		item1.box.y = lowerRightQuadrant.y;
@@ -125,7 +124,7 @@ public class QuadTreeTest {
 		assertTrue(set.contains(item1));
 		assertTrue(set.contains(item3));
 
-		// move rect1 to lower left
+		// move rectangle1 to lower left
 		oldBox = new Rectangle(item1.box.x, item1.box.y, item1.box.width, item1.box.height);
 		item1.box.x = lowerLeftQuadrant.x;
 		item1.box.y = lowerLeftQuadrant.y;
@@ -140,7 +139,7 @@ public class QuadTreeTest {
 		assertTrue(set.contains(item1));
 		assertTrue(set.contains(item4));
 
-		// move rect1 to upper left
+		// move rectangle1 to upper left
 		oldBox = new Rectangle(item1.box.x, item1.box.y, item1.box.width, item1.box.height);
 		item1.box.x = upperLeftQuadrant.x;
 		item1.box.y = upperLeftQuadrant.y;
@@ -335,15 +334,23 @@ public class QuadTreeTest {
 	@Test
 	public void borderTest() {
 
-		Rectangle rectBorderLeft 	= new Rectangle(upperLeftX, upperLeftY + (height /2), rectWidth, rectHeight);
-		Rectangle rectBorderTop 	= new Rectangle(upperLeftX + (width / 2), upperLeftY, rectWidth, rectHeight);
-		Rectangle rectBorderRight 	= new Rectangle(upperLeftX + width, upperLeftY + (height / 2), rectWidth, rectHeight);
-		Rectangle rectBorderBottom 	= new Rectangle(upperLeftX + (width / 2), upperLeftY + height, rectWidth, rectHeight);
+		Rectangle rectangleBorderLeft 	= new Rectangle(upperLeftX, upperLeftY + (height /2), rectangleWidth,
+				rectangleHeight
+		);
+		Rectangle rectangleBorderTop 	= new Rectangle(upperLeftX + (width / 2), upperLeftY, rectangleWidth,
+				rectangleHeight
+		);
+		Rectangle rectangleBorderRight 	= new Rectangle(upperLeftX + width - rectangleWidth, upperLeftY + (height / 2),
+				rectangleWidth, rectangleHeight
+		);
+		Rectangle rectangleBorderBottom 	= new Rectangle(upperLeftX + (width / 2), upperLeftY + height - rectangleHeight,
+				rectangleWidth, rectangleHeight
+		);
 		
-		TestingObject toBorderLeft 	= new TestingObject(rectBorderLeft);
-		TestingObject toBorderTop 	= new TestingObject(rectBorderTop);
-		TestingObject toBorderRight	= new TestingObject(rectBorderRight);
-		TestingObject toBorderBottom = new TestingObject(rectBorderBottom);
+		TestingObject toBorderLeft 	= new TestingObject(rectangleBorderLeft);
+		TestingObject toBorderTop 	= new TestingObject(rectangleBorderTop);
+		TestingObject toBorderRight	= new TestingObject(rectangleBorderRight);
+		TestingObject toBorderBottom = new TestingObject(rectangleBorderBottom);
 		
 		try {
 			tree.insertItem(toBorderLeft, toBorderLeft.box);
@@ -360,7 +367,7 @@ public class QuadTreeTest {
 		try {
 			tree.insertItem(toBorderBottom, toBorderBottom.box);
 		} catch (RuntimeException e) {
-			assertTrue(false);
+			assertTrue(e.getMessage(), false);
 		}
 		
 		try {
@@ -369,90 +376,6 @@ public class QuadTreeTest {
 			assertTrue(false);
 		}
 		
-	}
-	
-	@Test
-	public void manyItemsTestLarge() {
-		manyItemsTestInternal(width, height);
-	}
-	
-	@Test
-	public void manyItemsTestSmall() {
-		manyItemsTestInternal(100, 100);
-	}
-
-	private void manyItemsTestInternal(final int testWidth, final int testHeight) {
-
-		// generate 100 items and insert them
-		int objectCnt = 5000;
-		int moveCnt = 5;
-		Random rand = new Random();
-		int itemX, itemY;
-		Rectangle boundingBox;
-		TestingObject item;
-		List<TestingObject> list = new ArrayList<TestingObject>();
-
-		for (int i = 0; i < objectCnt; i++) {
-
-			itemX = Math.abs(rand.nextInt() % testWidth) + upperLeftX;
-			itemY = Math.abs(rand.nextInt() % testHeight) + upperLeftY;
-
-			boundingBox = new Rectangle(itemX, itemY, rectWidth, rectHeight);
-			item = new TestingObject(boundingBox);
-			list.add(item);
-
-			tree.insertItem(item, boundingBox);
-
-		}
-
-		// check if they are inside
-		for (TestingObject to : list) {
-			assertTrue(tree.containsItem(to, to.box));
-		}
-		
-		System.out.println("All objects are inside. Now randomly moving every of the " + objectCnt + " objects " + moveCnt + " times");
-		long startMovement = System.currentTimeMillis();
-		for (int i=0; i<moveCnt; i++) {
-			for (TestingObject to : list) {
-	
-				itemX = Math.abs(rand.nextInt() % testWidth) + upperLeftX;
-				itemY = Math.abs(rand.nextInt() % testHeight) + upperLeftY;
-	
-				boundingBox = to.box;
-				to.box = new Rectangle(itemX, itemY, rectWidth, rectHeight);
-	
-				tree.moveItem(to, boundingBox, to.box);
-	
-				assertTrue(tree.searchItems(to.box).contains(to));
-				assertTrue(to.box + " was not found", tree.containsItem(to, to.box));
-	
-			}
-		}
-		System.out.println("Moving took " + (System.currentTimeMillis()-startMovement) + " ms.");
-
-		// remove 10 items per time and check if the rest is still inside
-		for (int i = 0; i < list.size(); i++) {
-
-			tree.removeItem(list.get(i), list.get(i).box);
-
-			if (i % 10 == 0) {
-
-				// check if the first i elements have been removed
-				for (int k = 0; k < i; k++)
-					assertFalse(list.get(k).box + " konnte nicht gefunden werden", tree
-							.containsItem(list.get(k), list.get(k).box));
-
-				// check if the other elements are still inside
-				for (int k = i + 1; k < list.size(); k++)
-					assertTrue(list.get(k).box + " konnte nicht gefunden werden", tree
-							.containsItem(list.get(k), list.get(k).box));
-
-			}
-
-		}
-
-		System.out.println(tree);
-
 	}
 
 }
