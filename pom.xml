@@ -70,7 +70,7 @@
 				</os>
 			</activation>
 			<properties>
-				<swt.artifactId>swt-gtk-linux</swt.artifactId>
+				<swt.artifactId>swt-gtk-linux-x86</swt.artifactId>
 				<swt.version>3.6.1</swt.version>
 			</properties>
 		</profile>
@@ -82,7 +82,7 @@
 				</os>
 			</activation>
 			<properties>
-				<swt.artifactId>swt-win32-x86_64</swt.artifactId>
+				<swt.artifactId>swt-windows-x86_64</swt.artifactId>
 				<swt.version>3.6.1</swt.version>
 			</properties>
 		</profile>
@@ -95,7 +95,7 @@
 				</os>
 			</activation>
 			<properties>
-				<swt.artifactId>swt-win32</swt.artifactId>
+				<swt.artifactId>swt-windows-x86</swt.artifactId>
 				<swt.version>3.6.1</swt.version>
 			</properties>
 		</profile>
